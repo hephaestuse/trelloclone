@@ -14,7 +14,7 @@ import { drawerWidth } from "./constants";
 import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { getUser } from "../services/user";
+import { getUserProfile } from "../services/user";
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
@@ -53,7 +53,7 @@ function Header({ open, setOpen }: THeaderProps) {
 
   const { data: userProfile } = useQuery({
     queryKey: ["avatarUrl"],
-    queryFn: () => getUser(userId),
+    queryFn: () => getUserProfile(userId),
   });
   return (
     <AppBar
