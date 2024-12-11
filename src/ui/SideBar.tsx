@@ -12,7 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import HomeIcon from "@mui/icons-material/Home";
-import { Collapse, Divider } from "@mui/material";
+import { Collapse, Divider, Typography } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
@@ -44,11 +44,7 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
   const userId = useSelector((state: RootState) => state.user.userId);
 
   /***********Rquery ************/
-  const {
-    data: boards,
-    error,
-    loading,
-  } = useQuery({
+  const { data: boards } = useQuery({
     queryKey: ["boards"],
     queryFn: () => getBoards(userId),
   });
@@ -107,22 +103,26 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
         </ListItemButton>
         <Collapse in={boardsListOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {boards?.map((boards) => (
-              <ListItemButton sx={{ pl: 4 }} key={boards.board_id}>
-                <ListItemIcon>
-                  <DashboardOutlinedIcon color="primary" />
-                </ListItemIcon>
-                <ListItemText primary={boards.name} />
-              </ListItemButton>
-            ))}
-            {/* {["Board1", "Board2", "Board3", "Board4"].map((text) => (
-              <ListItemButton sx={{ pl: 4 }} key={text}>
-                <ListItemIcon>
-                  <DashboardOutlinedIcon color="primary" />
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            ))} */}
+            {boards ? (
+              boards.map((boards) => (
+                <ListItemButton sx={{ pl: 4 }} key={boards.board_id}>
+                  <ListItemIcon>
+                    <DashboardOutlinedIcon color="primary" />
+                  </ListItemIcon>
+                  <ListItemText primary={boards.name} />
+                </ListItemButton>
+              ))
+            ) : (
+              <Typography
+                variant="caption"
+                color="error"
+                component="p"
+                marginX={3}
+                sx={{ fontWeight: "bold" }}
+              >
+                there is a problem whith your connection to server
+              </Typography>
+            )}
           </List>
         </Collapse>
       </List>
