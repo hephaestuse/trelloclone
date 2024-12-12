@@ -52,7 +52,7 @@ function Header({ open, setOpen }: THeaderProps) {
   const userId = useSelector((state: RootState) => state.user.userId);
 
   const { data: userProfile } = useQuery({
-    queryKey: ["avatarUrl"],
+    queryKey: ["userProfile"],
     queryFn: () => getUserProfile(userId),
   });
   return (

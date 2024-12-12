@@ -1,16 +1,26 @@
 import { Container, Grid2 } from "@mui/material";
 import BoardCard from "../ui/BoardCard";
+import { useQuery } from "@tanstack/react-query";
+import { getBoards } from "../services/boards";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 function Dashboard() {
+  const userId = useSelector((state: RootState) => state.user.userId);
+  const { data } = useQuery({
+    queryKey: ["boards"],
+    queryFn: () => getBoards(userId),
+  });
+
   return (
     <Container>
       <Grid2 container spacing={1}>
-        <BoardCard imgUrl="https://huqcuwgqbbzjbtxqlyio.supabase.co/storage/v1/object/sign/userAvatar/ahad.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJ1c2VyQXZhdGFyL2FoYWQuanBnIiwiaWF0IjoxNzMzODI2NzgzLCJleHAiOjE3NjUzNjI3ODN9.se6YEuqsOWDbL5-gt8ylRwMyt_veZyBR54EUmXk7YJw&t=2024-12-10T10%3A33%3A04.705Z">sekjghskjebvkjb</BoardCard>
-        <BoardCard>sekjghskjebvkjb</BoardCard>
-        <BoardCard>sekjghskjebvkjb</BoardCard>
-        <BoardCard>sekjghskjebvkjb</BoardCard>
-        <BoardCard>sekjghskjebvkjb</BoardCard>
-        <BoardCard>sekjghskjebvkjb</BoardCard>
+        {data?.map((board) => (
+          <BoardCard key={board.board_id} imgUrl={board.bg_Img}>
+            {board.name}
+          </BoardCard>
+        ))}
+        <BoardCard type="plus"></BoardCard>
       </Grid2>
     </Container>
   );
