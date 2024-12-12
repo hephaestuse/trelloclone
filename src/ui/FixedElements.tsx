@@ -41,7 +41,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function FixedElements() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   return (
     <Box sx={{ display: "flex" }}>
