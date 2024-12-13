@@ -100,7 +100,7 @@ function Header({ open, setOpen }: THeaderProps) {
         <Avatar
           sx={{ bgcolor: deepOrange[500] }}
           alt="user name"
-          src={userProfile?.avatar}
+          src={`${userProfile?.avatar}`}
         />
       </Toolbar>
     </AppBar>
