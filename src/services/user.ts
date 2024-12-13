@@ -1,3 +1,4 @@
+
 import { supabase } from "./supabase";
 
 export async function getUserProfile(userId: string | null) {

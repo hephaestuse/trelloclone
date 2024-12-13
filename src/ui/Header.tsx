@@ -11,10 +11,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Avatar } from "@mui/material";
 import { deepOrange } from "@mui/material/colors";
 import { drawerWidth } from "./constants";
-import { useQuery } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { getUserProfile } from "../services/user";
+
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
@@ -49,12 +48,8 @@ function Header({ open, setOpen }: THeaderProps) {
     setOpen(true);
   };
 
-  const userId = useSelector((state: RootState) => state.user.userId);
+  const userProfile = useSelector((state: RootState) => state.user.userProfile);
 
-  const { data: userProfile } = useQuery({
-    queryKey: ["userProfile"],
-    queryFn: () => getUserProfile(userId),
-  });
   return (
     <AppBar
       position="fixed"
@@ -104,7 +99,7 @@ function Header({ open, setOpen }: THeaderProps) {
 
         <Avatar
           sx={{ bgcolor: deepOrange[500] }}
-          alt="Remy Sharp"
+          alt="user name"
           src={userProfile?.avatar}
         />
       </Toolbar>

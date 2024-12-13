@@ -6,6 +6,11 @@ import CssBaseline from "@mui/material/CssBaseline";
 import SideBar from "./SideBar";
 import { drawerWidth } from "./constants";
 import Header from "./Header";
+import { useDispatch, useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { getUserProfile } from "../services/user";
+import { RootState } from "../store";
+import { setUserProfile } from "../features/userSetting/userSlice";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -42,52 +47,16 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function FixedElements() {
   const [open, setOpen] = React.useState(false);
-
+  const userId = useSelector((state: RootState) => state.user.userId);
+  const dispatch = useDispatch();
+  const { data: userProfile } = useQuery({
+    queryKey: ["userProfile"],
+    queryFn: () => getUserProfile(userId),
+  });
+  dispatch(setUserProfile(userProfile));
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* <AppBar
-        position="fixed"
-        open={open}
-        sx={{
-          background: "rgba(255, 255, 255, 0.2)",
-          backdropFilter: "blur(10px)",
-          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-          border: "1px solid rgba(255, 255, 255, 0.3)",
-        }}
-      >
-        <Toolbar sx={{ display: "flex" }}>
-          <IconButton
-            color="primary"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={[
-              {
-                mr: 2,
-              },
-              open && { display: "none" },
-            ]}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h4"
-            color="primary"
-            noWrap
-            component="div"
-            marginX={5}
-            sx={{ fontWeight: "bold" }}
-          >
-            Do It
-          </Typography>
-          <Avatar
-            sx={{ bgcolor: deepOrange[500], marginLeft: "auto" }}
-            alt="Remy Sharp"
-            src="/broken-image.jpg"
-          />
-        </Toolbar>
-      </AppBar> */}
       <Header open={open} setOpen={setOpen} />
       <SideBar open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
       <Main open={open}>

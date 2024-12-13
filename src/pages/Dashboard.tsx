@@ -11,7 +11,6 @@ function Dashboard() {
     queryKey: ["boards"],
     queryFn: () => getBoards(userId),
   });
-
   return (
     <Container>
       <Grid2 container spacing={1}>
