@@ -6,6 +6,7 @@ type props = {
   imgUrl?: string;
   overeffect?: boolean;
   type?: string;
+  onclickFn?: () => void;
 };
 const pallet = ["#ff99c8", "#fcf6bd", "#d0f4de", "#a9def9", "#e4c1f9"];
 function getRandomColor() {
@@ -20,7 +21,8 @@ function BoardCard({
   imgUrl,
   children,
   gridTemplate = { xs: 6, md: 4, lg: 3 },
-}: props) {
+  onclickFn,
+}: props): JSX.Element | undefined {
   if (type === "plus")
     return (
       <Grid2
@@ -53,6 +55,7 @@ function BoardCard({
         component={"div"}
         size={gridTemplate}
         padding={1}
+        onClick={onclickFn}
         sx={{
           backgroundColor: imgUrl ? undefined : getRandomColor(),
           backgroundImage: imgUrl ? `url(${imgUrl})` : undefined,

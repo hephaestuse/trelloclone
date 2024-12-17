@@ -20,7 +20,7 @@ function App() {
             <Routes>
               <Route element={<AppLayot />}>
                 <Route path="/" element={<Dashboard />} />
-                <Route path="/board" element={<Boardpage />} />
+                <Route path="/board/:boardId" element={<Boardpage />} />
                 <Route path="*" element={<Pagenotfound />} />
               </Route>
             </Routes>
