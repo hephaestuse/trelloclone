@@ -9,7 +9,7 @@ function AppLayot() {
     <>
       <HeaderAndSideBar />
       <ReactQueryDevtools></ReactQueryDevtools>
-      <Container>
+      <Container sx={{ maxWidth: "100vw!important", padding: "0px!important", height:"85dvh"}}>
         <Outlet />
       </Container>
     </>

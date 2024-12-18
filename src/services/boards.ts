@@ -8,3 +8,12 @@ export async function getBoards(userId: string | null) {
   if (error) throw new Error(error.message);
   return data;
 }
+export async function getBoardData(boardId: string | undefined) {
+  const { data, error } = await supabase
+    .from("boards")
+    .select("*")
+    .eq("board_id", boardId)
+    .single();
+  if (error) throw new Error(error.message);
+  return data;
+}

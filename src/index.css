@@ -15,3 +15,33 @@
 .hoverParent:hover .blackOverlay {
   opacity: 1;
 }
+body {
+  min-height: 100dvh;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* height: max-content; */
+}
+/* اسکرول‌بار در کل صفحه */
+body::-webkit-scrollbar {
+  width: 8px; /* عرض اسکرول‌بار */
+  height: 8px; /* ارتفاع اسکرول‌بار */
+}
+
+body::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.5); /* رنگ خاکستری و شفاف */
+  border-radius: 4px; /* گوشه‌های گرد */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.8); /* رنگ تیره‌تر هنگام هاور */
+}
+
+body::-webkit-scrollbar-track {
+  background: transparent; /* پس‌زمینه محو */
+}
+
+/* حذف دکمه‌های اسکرول */
+body::-webkit-scrollbar-button {
+  display: none; /* پنهان کردن دکمه‌ها */
+}
