@@ -1,4 +1,4 @@
-import { Container, Grid2 } from "@mui/material";
+import { Box, Container, Grid2, Stack, Typography } from "@mui/material";
 import BoardCard from "../ui/BoardCard";
 import { useQuery } from "@tanstack/react-query";
 import { getBoards } from "../services/boards";
@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useNavigate } from "react-router-dom";
+
 function Dashboard() {
   const naviagte = useNavigate();
   const userId = useSelector((state: RootState) => state.user.userId);
@@ -21,7 +22,26 @@ function Dashboard() {
       {isLoading && (
         <CircularProgress size={100} sx={{ display: "flex", margin: "auto" }} />
       )}
-
+      <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+        <Typography
+          variant="h4"
+          color="textDisabled"
+          // noWrap
+          component="p"
+          marginX={5}
+          sx={{ marginLeft: "auto" }}
+        >
+          boards
+        </Typography>
+        <Box
+          sx={{
+            backgroundColor: "GrayText",
+            width: "70%",
+            height: 2,
+            marginLeft: "auto",
+          }}
+        ></Box>
+      </Stack>
       <Grid2 container spacing={3}>
         {data?.map((board) => (
           <BoardCard
