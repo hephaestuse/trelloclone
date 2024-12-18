@@ -15,12 +15,6 @@ const theme = createTheme({
       dark: "#087f23", // رنگ تیره‌تر
       contrastText: "#ffffff", // رنگ متن
     },
-    stone: {
-      light: "#e7e5e4",
-      main: "#78716c",
-      dark: "#44403c",
-      contrastText: "#ffffff",
-    }, // رنگ متنی که روی این گروه استفاده می‌شود},
     background: {
       default: "#ffffff", // رنگ پس‌زمینه پیش‌فرض
       paper: "#f5f5f5", // رنگ پس‌زمینه برای کارت‌ها و جعبه‌ها
