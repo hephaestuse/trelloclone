@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getBoardData } from "../services/boards";
 import { Box } from "@mui/material";
 import BoardCol from "../features/board/BoardCol";
+import { getCols } from "../services/cols";
 const boxStyle = {
   display: "flex",
   overflowX: "auto",
@@ -36,14 +37,24 @@ function Boardpage() {
     queryFn: () => getBoardData(boardId),
   });
 
-  // تنظیم بک‌گراند بادی
+  const { data: cols } = useQuery({
+    queryKey: ["currentBoardcols"],
+    queryFn: () => getCols(boardId),
+  });
+
+  if (cols) {
+    cols.sort((a, b) => a.position - b.position);
+  }
+
   if (data?.bg_Img) {
     document.body.style.backgroundImage = `url(${data.bg_Img})`;
   }
 
   return (
     <Box sx={boxStyle}>
-      <BoardCol colTitle="colTilte"/>
+      {cols?.map((cols) => (
+        <BoardCol key={cols.columns_id} colTitle={cols.name} />
+      ))}
     </Box>
   );
 }
