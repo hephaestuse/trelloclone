@@ -11,6 +11,8 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "../services/user";
 import { RootState } from "../store";
 import { setUserProfile } from "../features/userSetting/userSlice";
+import { Container } from "@mui/material";
+import { Outlet } from "react-router-dom";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -59,8 +61,16 @@ export default function FixedElements() {
       <CssBaseline />
       <Header open={open} setOpen={setOpen} />
       <SideBar open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
-      <Main open={open}>
+      <Main sx={{ height: "100dvh" }} open={open}>
         <DrawerHeader />
+        <Container
+          sx={{
+            maxWidth: "100vw!important",
+            padding: "0px!important",
+          }}
+        >
+          <Outlet />
+        </Container>
       </Main>
     </Box>
   );

@@ -17,6 +17,7 @@ function Dashboard() {
   function handleClick(id: string) {
     naviagte(`/board/${id}`);
   }
+  document.body.style.backgroundImage = ``;
   return (
     <Container>
       {isLoading && (

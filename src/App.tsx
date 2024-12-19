@@ -4,10 +4,10 @@ import Boardpage from "./pages/Boardpage";
 import Pagenotfound from "./pages/Pagenotfound";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme/theme";
-import AppLayot from "./ui/AppLayot";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import store from "./store";
+import FixedElements from "./ui/FixedElements";
 
 function App() {
   const queryClinte = new QueryClient();
@@ -18,7 +18,7 @@ function App() {
           <ThemeProvider theme={theme}>
             <CssBaseline /> {/****globals for Css reset for MUI*****/}
             <Routes>
-              <Route element={<AppLayot />}>
+              <Route element={<FixedElements />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/board/:boardId" element={<Boardpage />} />
                 <Route path="*" element={<Pagenotfound />} />
