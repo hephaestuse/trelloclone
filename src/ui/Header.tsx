@@ -82,7 +82,7 @@ function Header({ open, setOpen }: THeaderProps) {
           noWrap
           component="div"
           marginX={5}
-          sx={{ fontWeight: "bold" }}
+          sx={{ fontWeight: "bold", fontSize: { xs: "1rem", sm: "2rem" } }}
         >
           Do It
         </Typography>
