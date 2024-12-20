@@ -23,7 +23,7 @@ function Dashboard() {
       {isLoading && (
         <CircularProgress size={100} sx={{ display: "flex", margin: "auto" }} />
       )}
-      <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
+      <Stack direction="row" spacing={2} sx={{ alignItems: "center", mb: 3 }}>
         <Typography
           variant="h4"
           color="textDisabled"
