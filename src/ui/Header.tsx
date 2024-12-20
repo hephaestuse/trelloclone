@@ -13,6 +13,7 @@ import { deepOrange } from "@mui/material/colors";
 import { drawerWidth } from "./constants";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { useNavigate } from "react-router-dom";
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -44,12 +45,15 @@ const AppBar = styled(MuiAppBar, {
   ],
 }));
 function Header({ open, setOpen }: THeaderProps) {
+  const navigate = useNavigate();
+  const userProfile = useSelector((state: RootState) => state.user.userProfile);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
-  const userProfile = useSelector((state: RootState) => state.user.userProfile);
-
+  function handleClickHome() {
+    navigate(`/`);
+  }
   return (
     <AppBar
       position="fixed"
@@ -82,7 +86,12 @@ function Header({ open, setOpen }: THeaderProps) {
           noWrap
           component="div"
           marginX={5}
-          sx={{ fontWeight: "bold", fontSize: { xs: "1rem", sm: "2rem" } }}
+          sx={{
+            fontWeight: "bold",
+            fontSize: { xs: "1rem", sm: "2rem" },
+            cursor: "pointer",
+          }}
+          onClick={handleClickHome}
         >
           Do It
         </Typography>

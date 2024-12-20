@@ -36,6 +36,7 @@ function Boardpage() {
     queryKey: ["currentBoardData"],
     queryFn: () => getBoardData(boardId),
   });
+  console.log(data);
 
   const { data: cols } = useQuery({
     queryKey: ["currentBoardcols"],
@@ -48,6 +49,9 @@ function Boardpage() {
 
   if (data?.bg_Img) {
     document.body.style.backgroundImage = `url(${data.bg_Img})`;
+  }
+  if (data?.bg_Img === null) {
+    document.body.style.backgroundImage = "";
   }
 
   return (
