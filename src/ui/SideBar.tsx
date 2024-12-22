@@ -20,6 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getBoards } from "../services/boards";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { useNavigate } from "react-router-dom";
 
 type TSidebar = {
   open: boolean;
@@ -35,15 +36,17 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
+  const navigate = useNavigate();
   const [boardsListOpen, setListOpen] = React.useState(false);
   const theme = useTheme();
-
+  function handleClickToPage(boardId: string) {
+    navigate(`/board/${boardId}`);
+  }
   const handleDrawerClose = () => {
     setOpen(false);
   };
   const userId = useSelector((state: RootState) => state.user.userId);
 
-  /***********Rquery ************/
   const { data: boards } = useQuery({
     queryKey: ["boards"],
     queryFn: () => getBoards(userId),
@@ -105,7 +108,11 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
           <List component="div" disablePadding>
             {boards ? (
               boards.map((boards) => (
-                <ListItemButton sx={{ pl: 4 }} key={boards.board_id}>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  key={boards.board_id}
+                  onClick={() => handleClickToPage(boards.board_id)}
+                >
                   <ListItemIcon>
                     <DashboardOutlinedIcon color="primary" />
                   </ListItemIcon>

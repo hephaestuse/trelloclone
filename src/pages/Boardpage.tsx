@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getBoardData } from "../services/boards";
-import { Box } from "@mui/material";
+import { Box} from "@mui/material";
 import BoardCol from "../features/board/BoardCol";
 import { getCols } from "../services/cols";
+import React, { useEffect } from "react";
 const boxStyle = {
   display: "flex",
   overflowX: "auto",
@@ -32,32 +33,38 @@ const boxStyle = {
 };
 function Boardpage() {
   const { boardId } = useParams();
+
   const { data } = useQuery({
-    queryKey: ["currentBoardData"],
+    queryKey: ["currentBoardData", boardId],
     queryFn: () => getBoardData(boardId),
+    enabled: !!boardId,
   });
-  console.log(data);
 
   const { data: cols } = useQuery({
-    queryKey: ["currentBoardcols"],
+    queryKey: ["currentBoardcols", boardId],
     queryFn: () => getCols(boardId),
+    enabled: !!boardId,
   });
 
-  if (cols) {
-    cols.sort((a, b) => a.position - b.position);
-  }
+  useEffect(() => {
+    if (data?.bg_Img) {
+      document.body.style.backgroundImage = `url(${data.bg_Img})`;
+    } else {
+      document.body.style.backgroundImage = "";
+    }
+  }, [data?.bg_Img]);
 
-  if (data?.bg_Img) {
-    document.body.style.backgroundImage = `url(${data.bg_Img})`;
-  }
-  if (data?.bg_Img === null) {
-    document.body.style.backgroundImage = "";
-  }
+  const sortedCols = React.useMemo(() => {
+    if (cols) {
+      return [...cols].sort((a, b) => a.position - b.position);
+    }
+    return [];
+  }, [cols]);
 
   return (
     <Box sx={boxStyle}>
-      {cols?.map((cols) => (
-        <BoardCol key={cols.columns_id} colTitle={cols.name} />
+      {sortedCols.map((col) => (
+        <BoardCol key={col.columns_id} colTitle={col.name} />
       ))}
     </Box>
   );

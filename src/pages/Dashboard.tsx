@@ -20,14 +20,10 @@ function Dashboard() {
   document.body.style.backgroundImage = ``;
   return (
     <Container>
-      {isLoading && (
-        <CircularProgress size={100} sx={{ display: "flex", margin: "auto" }} />
-      )}
       <Stack direction="row" spacing={2} sx={{ alignItems: "center", mb: 3 }}>
         <Typography
           variant="h4"
           color="textDisabled"
-          // noWrap
           component="p"
           marginX={5}
           sx={{ marginLeft: "auto" }}
@@ -43,6 +39,9 @@ function Dashboard() {
           }}
         ></Box>
       </Stack>
+      {isLoading && (
+        <CircularProgress size={100} sx={{ display: "flex", margin: "auto" }} />
+      )}
       <Grid2 container spacing={3}>
         {data?.map((board) => (
           <BoardCard
