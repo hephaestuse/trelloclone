@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getBoardData } from "../services/boards";
-import { Box} from "@mui/material";
+import { Box } from "@mui/material";
 import BoardCol from "../features/board/BoardCol";
 import { getCols } from "../services/cols";
 import React, { useEffect } from "react";
@@ -64,7 +64,11 @@ function Boardpage() {
   return (
     <Box sx={boxStyle}>
       {sortedCols.map((col) => (
-        <BoardCol key={col.columns_id} colTitle={col.name} />
+        <BoardCol
+          key={col.columns_id}
+          colTitle={col.name}
+          colId={col.columns_id}
+        />
       ))}
     </Box>
   );

@@ -9,7 +9,11 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import styled from "@emotion/styled";
-type props = { colTitle: string };
+import JobCard from "./JobCard";
+import { useQuery } from "@tanstack/react-query";
+import { getJobs } from "../../services/Jobs";
+import React from "react";
+type props = { colTitle: string; colId: string };
 
 const CustomButton = styled(Button)({
   textTransform: "capitalize",
@@ -18,8 +22,19 @@ const CustomButton = styled(Button)({
     backgroundColor: "rgba(0, 0, 0, 0.1)",
   },
 });
+function BoardCol({ colTitle, colId }: props) {
+  const { data: jobs, isLoading } = useQuery({
+    queryKey: ["jobs", colId],
+    queryFn: () => getJobs(colId),
+    enabled: !!colId,
+  });
+  const sortedJobs = React.useMemo(() => {
+    if (jobs) {
+      return [...jobs].sort((a, b) => a.position - b.position);
+    }
+    return [];
+  }, [jobs]);
 
-function BoardCol({ colTitle }: props) {
   return (
     <>
       <Paper
@@ -48,12 +63,10 @@ function BoardCol({ colTitle }: props) {
             <MoreVertIcon />
           </IconButton>
         </Stack>
-        <Stack spacing={3}>
-          <div>2545</div>
-          <div>2545</div>
-          <div>2545</div>
-          <div>2545</div>
-          <div>2545</div>
+        <Stack spacing={2}>
+          {sortedJobs?.map((job) => (
+            <JobCard>{job.title}</JobCard>
+          ))}
         </Stack>
         <Box sx={{ mt: 2, color: "rgb(41, 41, 41)" }}>
           <CustomButton
