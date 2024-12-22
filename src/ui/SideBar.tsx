@@ -62,7 +62,7 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          background: "rgba(255, 255, 255, 0.2)",
+          background: "rgba(255, 255, 255, 0.651)",
           backdropFilter: "blur(10px)",
           boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
           border: "1px solid rgba(255, 255, 255, 0.3)",
