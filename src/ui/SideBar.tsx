@@ -51,6 +51,9 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
     queryKey: ["boards"],
     queryFn: () => getBoards(userId),
   });
+  function handleClickHome() {
+    navigate(`/`);
+  }
   return (
     <Drawer
       sx={{
@@ -90,7 +93,10 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
                   <WorkspacesIcon color="primary" />
                 )}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText
+                primary={text}
+                onClick={text === "Home" ? handleClickHome : undefined}
+              />
             </ListItemButton>
           </ListItem>
         ))}
