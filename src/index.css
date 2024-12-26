@@ -23,25 +23,25 @@ body {
   /* height: max-content; */
 }
 /* اسکرول‌بار در کل صفحه */
-body::-webkit-scrollbar {
+*::-webkit-scrollbar {
   width: 8px; /* عرض اسکرول‌بار */
   height: 8px; /* ارتفاع اسکرول‌بار */
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
   background: rgba(128, 128, 128, 0.5); /* رنگ خاکستری و شفاف */
   border-radius: 4px; /* گوشه‌های گرد */
 }
 
-body::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
   background: rgba(128, 128, 128, 0.8); /* رنگ تیره‌تر هنگام هاور */
 }
 
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: transparent; /* پس‌زمینه محو */
 }
 
 /* حذف دکمه‌های اسکرول */
-body::-webkit-scrollbar-button {
+*::-webkit-scrollbar-button {
   display: none; /* پنهان کردن دکمه‌ها */
 }

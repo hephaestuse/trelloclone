@@ -59,6 +59,7 @@ export default function FixedElements() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+      
       <Header open={open} setOpen={setOpen} />
       <SideBar open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
       <Main sx={{ height: "100dvh" }} open={open}>

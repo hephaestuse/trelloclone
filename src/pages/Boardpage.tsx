@@ -10,7 +10,7 @@ const boxStyle = {
   overflowX: "auto",
   overflowY: "hidden",
   width: "100%",
-  height: "100%",
+  height: "90dvh",
   margin: 0,
   padding: "0!important",
   "&::-webkit-scrollbar": {

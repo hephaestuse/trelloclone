@@ -10,11 +10,10 @@ import AddIcon from "@mui/icons-material/Add";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import styled from "@emotion/styled";
 import JobCard from "./JobCard";
-import { useQuery } from "@tanstack/react-query";
-import { getJobs } from "../../services/Jobs";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getJobs, postJobs } from "../../services/Jobs";
 import React from "react";
 type props = { colTitle: string; colId: string };
-
 const CustomButton = styled(Button)({
   textTransform: "capitalize",
   color: "rgb(41, 41, 41)",
@@ -23,7 +22,8 @@ const CustomButton = styled(Button)({
   },
 });
 function BoardCol({ colTitle, colId }: props) {
-  const { data: jobs, isLoading } = useQuery({
+  const queryClient = useQueryClient();
+  const { data: jobs } = useQuery({
     queryKey: ["jobs", colId],
     queryFn: () => getJobs(colId),
     enabled: !!colId,
@@ -34,7 +34,24 @@ function BoardCol({ colTitle, colId }: props) {
     }
     return [];
   }, [jobs]);
-
+  const mutation = useMutation({
+    mutationFn: postJobs,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobs", colId] });
+    },
+    onError: () => {
+      throw new Error();
+    },
+  });
+  function handleAddClick(colId: string) {
+    const postData = {
+      column_id: colId,
+      title: "this is what I posted",
+      description:
+        "this is what I postedthis is what I postedthis is what I postedthis is what I postedthis is what I posted",
+    };
+    mutation.mutate(postData);
+  }
   return (
     <>
       <Paper
@@ -44,7 +61,7 @@ function BoardCol({ colTitle, colId }: props) {
           border: "1px solid rgba(255, 255, 255, 0.3)",
           minWidth: 250,
           height: "fit-content",
-          maxHeight: "100%",
+          maxHeight: "100dvh",
           m: 1,
           py: 2,
           px: 1,
@@ -63,7 +80,7 @@ function BoardCol({ colTitle, colId }: props) {
             <MoreVertIcon />
           </IconButton>
         </Stack>
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={{ overflow: "auto", maxHeight: "70dvh" }}>
           {sortedJobs?.map((job) => (
             <JobCard>{job.title}</JobCard>
           ))}
@@ -73,6 +90,7 @@ function BoardCol({ colTitle, colId }: props) {
             autoCapitalize="words"
             size="small"
             startIcon={<AddIcon />}
+            onClick={() => handleAddClick(colId)}
           >
             add card
           </CustomButton>

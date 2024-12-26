@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import store from "./store";
 import FixedElements from "./ui/FixedElements";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function App() {
   const queryClinte = new QueryClient();
@@ -17,6 +18,7 @@ function App() {
         <BrowserRouter>
           <ThemeProvider theme={Theme}>
             <CssBaseline /> {/****globals for Css reset for MUI*****/}
+            <ReactQueryDevtools initialIsOpen={false} />
             <Routes>
               <Route element={<FixedElements />}>
                 <Route path="/" element={<Dashboard />} />

@@ -5,9 +5,7 @@ export async function getBoards(userId: string | null) {
     .from("boards")
     .select("*")
     .eq("owner_id", userId);
-  if (error) throw new Error(error.message); 
-  console.log(data);
-   
+  if (error) throw new Error(error.message);    
   return data;
 }
 export async function getBoardData(boardId: string | undefined) {
