@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-
+import { useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import SideBar from "./SideBar";
 import { drawerWidth } from "./constants";
@@ -55,11 +55,16 @@ export default function FixedElements() {
     queryKey: ["userProfile"],
     queryFn: () => getUserProfile(userId),
   });
-  dispatch(setUserProfile(userProfile));
+
+  useEffect(() => {
+    if (userProfile) {
+      dispatch(setUserProfile(userProfile));
+    }
+  }, [userProfile, dispatch]);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      
       <Header open={open} setOpen={setOpen} />
       <SideBar open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
       <Main sx={{ height: "100dvh" }} open={open}>
