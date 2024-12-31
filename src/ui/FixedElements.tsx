@@ -67,7 +67,7 @@ export default function FixedElements() {
       <CssBaseline />
       <Header open={open} setOpen={setOpen} />
       <SideBar open={open} setOpen={setOpen} drawerWidth={drawerWidth} />
-      <Main sx={{ height: "100dvh" }} open={open}>
+      <Main sx={{ height: "100dvh", width: "100vh" }} open={open}>
         <DrawerHeader />
         <Container
           sx={{

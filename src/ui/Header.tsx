@@ -57,12 +57,13 @@ function Header({ open, setOpen }: THeaderProps) {
   return (
     <AppBar
       position="fixed"
-      open={open}
+      open={false}
       sx={{
         background: "rgba(255, 255, 255, 0.651)",
         backdropFilter: "blur(10px)",
         boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
         border: "1px solid rgba(255, 255, 255, 0.3)",
+        zIndex: (theme) => theme.zIndex.drawer + 1,
       }}
     >
       <Toolbar sx={{ display: "flex" }}>
@@ -75,7 +76,6 @@ function Header({ open, setOpen }: THeaderProps) {
             {
               mr: 2,
             },
-            open && { display: "none" },
           ]}
         >
           <MenuIcon />

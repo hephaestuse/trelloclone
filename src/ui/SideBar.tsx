@@ -12,7 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import HomeIcon from "@mui/icons-material/Home";
-import { Collapse, Divider, Typography } from "@mui/material";
+import { Collapse, Divider, Toolbar, Typography } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
@@ -68,10 +68,12 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
           border: "1px solid rgba(255, 255, 255, 0.3)",
         },
       }}
+      // variant="permanent"
       variant="persistent"
       anchor="left"
       open={open}
     >
+      <Toolbar/>
       <DrawerHeader>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === "ltr" ? (
