@@ -44,7 +44,7 @@ const AppBar = styled(MuiAppBar, {
     },
   ],
 }));
-function Header({ open, setOpen }: THeaderProps) {
+function Header({ setOpen }: THeaderProps) {
   const navigate = useNavigate();
   const userProfile = useSelector((state: RootState) => state.user.userProfile);
   const handleDrawerOpen = () => {
