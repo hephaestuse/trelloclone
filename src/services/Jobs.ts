@@ -5,8 +5,7 @@ export async function getJobs(colId: string | undefined) {
     .from("cards")
     .select("*")
     .eq("column_id", colId);
-  if (error) throw new Error(error.message);
-
+  if (error) throw new Error(error.message);  
   return data;
 }
 export async function postJobs(postData:object) {

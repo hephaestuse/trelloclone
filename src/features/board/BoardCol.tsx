@@ -82,7 +82,7 @@ function BoardCol({ colTitle, colId }: props) {
         </Stack>
         <Stack spacing={2} sx={{ overflow: "auto", maxHeight: "70dvh" }}>
           {sortedJobs?.map((job) => (
-            <JobCard>{job.title}</JobCard>
+            <JobCard key={job.card_id}>{job.title}</JobCard>
           ))}
         </Stack>
         <Box sx={{ mt: 2, color: "rgb(41, 41, 41)" }}>
