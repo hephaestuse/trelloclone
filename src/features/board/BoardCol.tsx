@@ -72,7 +72,9 @@ function BoardCol({ colTitle, colId }: props) {
             <ModalCompound.TextInput rows={10}>
               Description
             </ModalCompound.TextInput>
-            <ModalCompound.Btn>Submit</ModalCompound.Btn>
+            <ModalCompound.Btn customcolor="#337926" customBgColor="#5de44571">
+              Submit
+            </ModalCompound.Btn>
           </ModalCompound>
         </Box>
       </Paper>

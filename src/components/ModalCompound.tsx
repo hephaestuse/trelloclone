@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import styled from "@emotion/styled";
-import { TextField, Typography } from "@mui/material";
+import { colors, TextField, Typography } from "@mui/material";
 type TModal = { children: React.ReactNode; buttontxt?: string };
 const style = {
   position: "absolute",
@@ -19,13 +19,16 @@ const style = {
   p: 4,
 };
 
-const CustomButton = styled(Button)({
+const CustomButton = styled(Button)<{
+  customcolor?: string;
+  customBgColor?: string;
+}>(({ customcolor, customBgColor }) => ({
   textTransform: "capitalize",
-  color: "rgb(41, 41, 41)",
+  color: customcolor || "#292929",
   "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    backgroundColor: customBgColor || "#00000019",
   },
-});
+}));
 
 type ModalContextType = {
   handleOpen: () => void;
@@ -43,14 +46,6 @@ function ModalCompound({ children, buttontxt }: TModal) {
   return (
     <ModalContext.Provider value={{ handleOpen, handleClose }}>
       <div>
-        {/* <CustomButton
-        autoCapitalize="words"
-        size="small"
-        startIcon={<AddIcon />}
-        onClick={handleOpen}
-      >
-        add card
-      </CustomButton> */}
         <CustomButton
           autoCapitalize="words"
           size="small"
@@ -60,20 +55,12 @@ function ModalCompound({ children, buttontxt }: TModal) {
           {buttontxt ? buttontxt : "open"}
         </CustomButton>
         <Modal
-          open={true}
+          open={open}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
-            {children}
-            {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography> */}
-          </Box>
+          <Box sx={style}>{children}</Box>
         </Modal>
       </div>
     </ModalContext.Provider>
@@ -82,7 +69,11 @@ function ModalCompound({ children, buttontxt }: TModal) {
 
 //children of ModalContext.Provider
 //ModalBtn
-function Btn({ children }: TModal) {
+function Btn({
+  children,
+  customcolor,
+  customBgColor,
+}: TModal & { customcolor?: string; customBgColor?: string }) {
   const context = React.useContext(ModalContext);
   if (!context) {
     throw new Error("Btn must be used within a ModalCompound");
@@ -94,6 +85,8 @@ function Btn({ children }: TModal) {
       size="small"
       startIcon={<AddIcon />}
       onClick={handleOpen}
+      customcolor={customcolor}
+      customBgColor={customBgColor}
     >
       {children}
     </CustomButton>
@@ -122,9 +115,23 @@ function TextInput({
     />
   );
 }
+//ModalTitle
 type TModalTitle = {
   children: React.ReactNode;
-  variant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "subtitle1" | "subtitle2" | "body1" | "body2" | "caption" | "button" | "overline";
+  variant?:
+    | "h1"
+    | "h2"
+    | "h3"
+    | "h4"
+    | "h5"
+    | "h6"
+    | "subtitle1"
+    | "subtitle2"
+    | "body1"
+    | "body2"
+    | "caption"
+    | "button"
+    | "overline";
   component?: React.ElementType;
 };
 function Title({ children, variant = "h6", component = "h2" }: TModalTitle) {
