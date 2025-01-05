@@ -65,8 +65,14 @@ function BoardCol({ colTitle, colId }: props) {
         </Stack>
         <Box sx={{ mt: 2, color: "rgb(41, 41, 41)" }}>
           <ModalCompound buttontxt="Add Card">
-            <ModalCompound.TextInput maxRows={2}>Tiltle</ModalCompound.TextInput>
-            <ModalCompound.TextInput rows={10}>Description</ModalCompound.TextInput>
+            <ModalCompound.Title>Add new job</ModalCompound.Title>
+            <ModalCompound.TextInput maxRows={2}>
+              Tiltle
+            </ModalCompound.TextInput>
+            <ModalCompound.TextInput rows={10}>
+              Description
+            </ModalCompound.TextInput>
+            <ModalCompound.Btn>Submit</ModalCompound.Btn>
           </ModalCompound>
         </Box>
       </Paper>

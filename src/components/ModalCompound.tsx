@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import styled from "@emotion/styled";
-import { TextField } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 type TModal = { children: React.ReactNode; buttontxt?: string };
 const style = {
   position: "absolute",
@@ -122,8 +122,21 @@ function TextInput({
     />
   );
 }
+type TModalTitle = {
+  children: React.ReactNode;
+  variant?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "subtitle1" | "subtitle2" | "body1" | "body2" | "caption" | "button" | "overline";
+  component?: React.ElementType;
+};
+function Title({ children, variant = "h6", component = "h2" }: TModalTitle) {
+  return (
+    <Typography variant={variant} component={component}>
+      {children}
+    </Typography>
+  );
+}
 //addchildren
 
 ModalCompound.Btn = Btn;
 ModalCompound.TextInput = TextInput;
+ModalCompound.Title = Title;
 export default ModalCompound;
