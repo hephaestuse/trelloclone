@@ -1,26 +1,13 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, IconButton, Paper, Stack, Typography } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import styled from "@emotion/styled";
+
 import JobCard from "./JobCard";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getJobs, postJobs } from "../../services/Jobs";
 import React from "react";
+import ModalCompound from "../../components/ModalCompound";
 type props = { colTitle: string; colId: string };
-const CustomButton = styled(Button)({
-  textTransform: "capitalize",
-  color: "rgb(41, 41, 41)",
-  "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.1)",
-  },
-});
+
 function BoardCol({ colTitle, colId }: props) {
   const queryClient = useQueryClient();
   const { data: jobs } = useQuery({
@@ -34,24 +21,15 @@ function BoardCol({ colTitle, colId }: props) {
     }
     return [];
   }, [jobs]);
-  const mutation = useMutation({
-    mutationFn: postJobs,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["jobs", colId] });
-    },
-    onError: () => {
-      throw new Error();
-    },
-  });
-  function handleAddClick(colId: string) {
-    const postData = {
-      column_id: colId,
-      title: "this is what I posted",
-      description:
-        "this is what I postedthis is what I postedthis is what I postedthis is what I postedthis is what I posted",
-    };
-    mutation.mutate(postData);
-  }
+  // const mutation = useMutation({
+  //   mutationFn: postJobs,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["jobs", colId] });
+  //   },
+  //   onError: () => {
+  //     throw new Error();
+  //   },
+  // });
   return (
     <>
       <Paper
@@ -86,14 +64,9 @@ function BoardCol({ colTitle, colId }: props) {
           ))}
         </Stack>
         <Box sx={{ mt: 2, color: "rgb(41, 41, 41)" }}>
-          <CustomButton
-            autoCapitalize="words"
-            size="small"
-            startIcon={<AddIcon />}
-            onClick={() => handleAddClick(colId)}
-          >
-            add card
-          </CustomButton>
+          <ModalCompound buttontxt="Add Card">
+            <ModalCompound.Btn>innerbtn</ModalCompound.Btn>
+          </ModalCompound>
         </Box>
       </Paper>
     </>
