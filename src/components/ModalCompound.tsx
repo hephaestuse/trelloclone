@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import styled from "@emotion/styled";
+import { TextField } from "@mui/material";
 type TModal = { children: React.ReactNode; buttontxt?: string };
 const style = {
   position: "absolute",
@@ -59,7 +60,7 @@ function ModalCompound({ children, buttontxt }: TModal) {
           {buttontxt ? buttontxt : "open"}
         </CustomButton>
         <Modal
-          open={open}
+          open={true}
           onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
@@ -80,6 +81,7 @@ function ModalCompound({ children, buttontxt }: TModal) {
 }
 
 //children of ModalContext.Provider
+//ModalBtn
 function Btn({ children }: TModal) {
   const context = React.useContext(ModalContext);
   if (!context) {
@@ -97,5 +99,31 @@ function Btn({ children }: TModal) {
     </CustomButton>
   );
 }
+//ModalTextInput
+type TModalTextInput = {
+  children: React.ReactNode;
+  fullWidth?: boolean;
+} & ({ rows: number; maxRows?: never } | { maxRows: number; rows?: never });
+function TextInput({
+  children,
+  maxRows = 1,
+  fullWidth = true,
+  rows = 0,
+}: TModalTextInput) {
+  return (
+    <TextField
+      id="outlined-multiline-flexible"
+      label={children}
+      multiline
+      maxRows={maxRows}
+      rows={rows}
+      margin="normal"
+      fullWidth={fullWidth}
+    />
+  );
+}
+//addchildren
+
 ModalCompound.Btn = Btn;
+ModalCompound.TextInput = TextInput;
 export default ModalCompound;
