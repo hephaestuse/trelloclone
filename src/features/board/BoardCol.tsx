@@ -21,15 +21,28 @@ function BoardCol({ colTitle, colId }: props) {
     }
     return [];
   }, [jobs]);
-  // const mutation = useMutation({
-  //   mutationFn: postJobs,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ["jobs", colId] });
-  //   },
-  //   onError: () => {
-  //     throw new Error();
-  //   },
-  // });
+  //text value controller
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  //mutation
+  const mutation = useMutation({
+    mutationFn: postJobs,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobs", colId] });
+    },
+    onError: () => {
+      throw new Error();
+    },
+  });
+  function handlePostCards() {
+    mutation.mutate({
+      title: title,
+      column_id: colId,
+      description: description,
+      position: sortedJobs.length + 1,
+    });
+  }
+
   return (
     <>
       <Paper
@@ -66,13 +79,27 @@ function BoardCol({ colTitle, colId }: props) {
         <Box sx={{ mt: 2, color: "rgb(41, 41, 41)" }}>
           <ModalCompound buttontxt="Add Card">
             <ModalCompound.Title>Add new job</ModalCompound.Title>
-            <ModalCompound.TextInput maxRows={2}>
+            <ModalCompound.TextInput
+              maxRows={2}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setTitle(event.target.value);
+              }}
+            >
               Tiltle
             </ModalCompound.TextInput>
-            <ModalCompound.TextInput rows={10}>
+            <ModalCompound.TextInput
+              rows={10}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                setDescription(event.target.value);
+              }}
+            >
               Description
             </ModalCompound.TextInput>
-            <ModalCompound.Btn customcolor="#337926" customBgColor="#5de44571">
+            <ModalCompound.Btn
+              customcolor="#337926"
+              custombgcolor="#5de44571"
+              onClick={handlePostCards}
+            >
               Submit
             </ModalCompound.Btn>
           </ModalCompound>

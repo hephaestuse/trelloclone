@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import styled from "@emotion/styled";
-import { colors, TextField, Typography } from "@mui/material";
+import { TextField, Typography } from "@mui/material";
 type TModal = { children: React.ReactNode; buttontxt?: string };
 const style = {
   position: "absolute",
@@ -21,12 +21,12 @@ const style = {
 
 const CustomButton = styled(Button)<{
   customcolor?: string;
-  customBgColor?: string;
-}>(({ customcolor, customBgColor }) => ({
+  custombgcolor?: string;
+}>(({ customcolor, custombgcolor }) => ({
   textTransform: "capitalize",
   color: customcolor || "#292929",
   "&:hover": {
-    backgroundColor: customBgColor || "#00000019",
+    backgroundColor: custombgcolor || "#00000019",
   },
 }));
 
@@ -72,21 +72,25 @@ function ModalCompound({ children, buttontxt }: TModal) {
 function Btn({
   children,
   customcolor,
-  customBgColor,
-}: TModal & { customcolor?: string; customBgColor?: string }) {
+  custombgcolor,
+  onClick,
+}: TModal & {
+  customcolor?: string;
+  custombgcolor?: string;
+  onClick?: () => void;
+}) {
   const context = React.useContext(ModalContext);
   if (!context) {
     throw new Error("Btn must be used within a ModalCompound");
   }
-  const { handleOpen } = context;
   return (
     <CustomButton
       autoCapitalize="words"
       size="small"
       startIcon={<AddIcon />}
-      onClick={handleOpen}
+      onClick={onClick}
       customcolor={customcolor}
-      customBgColor={customBgColor}
+      custombgcolor={custombgcolor}
     >
       {children}
     </CustomButton>
@@ -96,12 +100,14 @@ function Btn({
 type TModalTextInput = {
   children: React.ReactNode;
   fullWidth?: boolean;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 } & ({ rows: number; maxRows?: never } | { maxRows: number; rows?: never });
 function TextInput({
   children,
   maxRows = 1,
   fullWidth = true,
   rows = 0,
+  onChange,
 }: TModalTextInput) {
   return (
     <TextField
@@ -112,6 +118,7 @@ function TextInput({
       rows={rows}
       margin="normal"
       fullWidth={fullWidth}
+      onChange={onChange}
     />
   );
 }
