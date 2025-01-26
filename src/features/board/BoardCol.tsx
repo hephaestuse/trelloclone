@@ -1,13 +1,21 @@
-import { Box, IconButton, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  IconButton,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import JobCard from "./JobCard";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getJobs, postJobs } from "../../services/Jobs";
+import { batchJobUpdate, getJobs, postJobs } from "../../services/Jobs";
 import React from "react";
 import ModalCompound from "../../components/ModalCompound";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 type props = { colTitle: string; colId: string };
-
 function BoardCol({ colTitle, colId }: props) {
   const queryClient = useQueryClient();
   const { data: jobs } = useQuery({
@@ -25,7 +33,7 @@ function BoardCol({ colTitle, colId }: props) {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   //mutation
-  const mutation = useMutation({
+  const postMutation = useMutation({
     mutationFn: postJobs,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["jobs", colId] });
@@ -34,15 +42,55 @@ function BoardCol({ colTitle, colId }: props) {
       throw new Error();
     },
   });
+
   function handlePostCards() {
-    mutation.mutate({
+    postMutation.mutate({
       title: title,
       column_id: colId,
       description: description,
       position: sortedJobs.length + 1,
     });
   }
+  const positionMutation = useMutation({
+    mutationFn: batchJobUpdate,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobs", colId] });
+    },
+  });
+  async function handleChangePosition(direction: number, card_id: string) {
+    const currentIndex = sortedJobs.findIndex((job) => job.card_id === card_id);
+    const prevIndex = currentIndex - 1;
+    const nextIndex = currentIndex + 1;
 
+    const updateData =
+      direction === -1
+        ? [
+            {
+              card_id: sortedJobs[currentIndex].card_id,
+              position: sortedJobs[currentIndex].position - 1,
+            },
+            {
+              card_id: sortedJobs[prevIndex].card_id,
+              position: sortedJobs[prevIndex].position + 1,
+            },
+          ]
+        : [
+            {
+              card_id: sortedJobs[currentIndex].card_id,
+              position: sortedJobs[currentIndex].position + 1,
+            },
+            {
+              card_id: sortedJobs[nextIndex].card_id,
+              position: sortedJobs[nextIndex].position - 1,
+            },
+          ];
+    try {
+      await positionMutation.mutateAsync(updateData);
+      console.log("Records updated successfully");
+    } catch (error) {
+      console.error("Error updating records", error);
+    }
+  }
   return (
     <>
       <Paper
@@ -73,7 +121,35 @@ function BoardCol({ colTitle, colId }: props) {
         </Stack>
         <Stack spacing={2} sx={{ overflow: "auto", maxHeight: "70dvh" }}>
           {sortedJobs?.map((job) => (
-            <JobCard key={job.card_id}>{job.title}</JobCard>
+            <JobCard key={job.card_id}>
+              <>
+                <Box display="flex" justifyContent="left">
+                  <ArrowDropUpIcon
+                    sx={{
+                      fontSize: 30,
+                      "&:hover": {
+                        color: "info.main",
+                      },
+                    }}
+                    // onClick={() => handleChangePosition(-1, job.card_id)}
+                    onClick={() => handleChangePosition(-1, job.card_id)}
+                  />
+
+                  <ArrowDropDownIcon
+                    sx={{
+                      fontSize: 30,
+                      "&:hover": {
+                        color: "info.main",
+                      },
+                    }}
+                    onClick={() => handleChangePosition(1, job.card_id)}
+                    // onClick={() => handleChangePosition(1, job.card_id)}
+                  />
+                </Box>
+                <Divider sx={{ mb: 2 }} />
+                {job.title}
+              </>
+            </JobCard>
           ))}
         </Stack>
         <Box sx={{ mt: 2, color: "rgb(41, 41, 41)" }}>
