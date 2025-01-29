@@ -131,8 +131,10 @@ function BoardCol({ colTitle, colId }: props) {
                         color: "info.main",
                       },
                     }}
-                    // onClick={() => handleChangePosition(-1, job.card_id)}
-                    onClick={() => handleChangePosition(-1, job.card_id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleChangePosition(-1, job.card_id);
+                    }}
                   />
 
                   <ArrowDropDownIcon
@@ -142,8 +144,10 @@ function BoardCol({ colTitle, colId }: props) {
                         color: "info.main",
                       },
                     }}
-                    onClick={() => handleChangePosition(1, job.card_id)}
-                    // onClick={() => handleChangePosition(1, job.card_id)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleChangePosition(1, job.card_id);
+                    }}
                   />
                 </Box>
                 <Divider sx={{ mb: 2 }} />
