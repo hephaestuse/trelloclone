@@ -42,7 +42,7 @@ const ModalContext = React.createContext<ModalContextType | undefined>(
   undefined
 );
 
-function ModalCompound({ children, buttontxt}: TModal) {
+function ModalCompound({ children, buttontxt }: TModal) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -91,7 +91,10 @@ function Btn({
       autoCapitalize="words"
       size="small"
       startIcon={<AddIcon />}
-      onClick={onClick}
+      onClick={() => {
+      if (onClick) onClick();
+      context.handleClose();
+      }}
       customcolor={customcolor}
       custombgcolor={custombgcolor}
     >
