@@ -92,8 +92,8 @@ function Btn({
       size="small"
       startIcon={<AddIcon />}
       onClick={() => {
-      if (onClick) onClick();
-      context.handleClose();
+        if (onClick) onClick();
+        context.handleClose();
       }}
       customcolor={customcolor}
       custombgcolor={custombgcolor}

@@ -1,7 +1,11 @@
 import {
   Box,
+  colors,
   Divider,
+  Fade,
   IconButton,
+  Menu,
+  MenuItem,
   Paper,
   Stack,
   Typography,
@@ -15,9 +19,30 @@ import React from "react";
 import ModalCompound from "../../components/ModalCompound";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
+const paperStyle = {
+  background: "rgba(255, 255, 255, 0.685)",
+  backdropFilter: "blur(5px)",
+  border: "1px solid rgba(255, 255, 255, 0.3)",
+  minWidth: 250,
+  height: "fit-content",
+  maxHeight: "100dvh",
+  m: 1,
+  py: 2,
+  px: 1,
+  color: "rgb(80, 80, 80)",
+};
 type props = { colTitle: string; colId: string };
 function BoardCol({ colTitle, colId }: props) {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleButtonMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const queryClient = useQueryClient();
   const { data: jobs } = useQuery({
     queryKey: ["jobs", colId],
@@ -94,20 +119,7 @@ function BoardCol({ colTitle, colId }: props) {
   }
   return (
     <>
-      <Paper
-        sx={{
-          background: "rgba(255, 255, 255, 0.685)",
-          backdropFilter: "blur(5px)",
-          border: "1px solid rgba(255, 255, 255, 0.3)",
-          minWidth: 250,
-          height: "fit-content",
-          maxHeight: "100dvh",
-          m: 1,
-          py: 2,
-          px: 1,
-          color: "rgb(80, 80, 80)",
-        }}
-      >
+      <Paper sx={paperStyle}>
         <Stack direction="row" sx={{ alignItems: "center", mb: 2 }}>
           <Typography
             variant="body1"
@@ -116,9 +128,42 @@ function BoardCol({ colTitle, colId }: props) {
           >
             {colTitle}
           </Typography>
-          <IconButton aria-label="job-settings" sx={{ ml: "auto" }}>
-            <MoreVertIcon />
-          </IconButton>
+          <div style={{ marginLeft: "auto" }}>
+            <IconButton
+              aria-label="job-settings"
+              aria-controls={open ? "fade-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleButtonMenuClick}
+            >
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="fade-menu"
+              MenuListProps={{
+                "aria-labelledby": "fade-button",
+              }}
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              TransitionComponent={Fade}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <MenuItem onClick={handleClose} sx={{ color: "#262779" }}>
+                <EditIcon /> Edit title
+              </MenuItem>
+              <MenuItem onClick={handleClose} sx={{ color: "error.main" }}>
+                <DeleteForeverIcon /> Delete
+              </MenuItem>
+            </Menu>
+          </div>
         </Stack>
         <Stack spacing={2} sx={{ overflow: "auto", maxHeight: "70dvh" }}>
           {sortedJobs?.map((job) => (
