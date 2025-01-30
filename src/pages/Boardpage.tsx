@@ -1,10 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { getBoardData } from "../services/boards";
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import BoardCol from "../features/board/BoardCol";
-import { getCols } from "../services/cols";
+import { addCol, getCols } from "../services/cols";
 import React, { useEffect } from "react";
+import ModalCompound from "../components/ModalCompound";
 const boxStyle = {
   display: "flex",
   overflowX: "auto",
@@ -31,15 +32,32 @@ const boxStyle = {
     display: "none",
   },
 };
+const paperStyle = {
+  background: "rgba(255, 255, 255, 0.685)",
+  backdropFilter: "blur(5px)",
+  border: "1px solid rgba(255, 255, 255, 0.3)",
+  minWidth: 250,
+  height: "fit-content",
+  maxHeight: "100dvh",
+  m: 1,
+  py: 2,
+  px: 1,
+  color: "rgb(80, 80, 80)",
+  transition: "0.3s",
+  "&:hover": {
+    cursor: "pointer",
+    color: "black",
+  },
+};
 function Boardpage() {
+  const [title, setTitle] = React.useState("");
   const { boardId } = useParams();
-
+  const queryClient = useQueryClient();
   const { data } = useQuery({
     queryKey: ["currentBoardData", boardId],
     queryFn: () => getBoardData(boardId),
     enabled: !!boardId,
   });
-
   const { data: cols } = useQuery({
     queryKey: ["currentBoardcols", boardId],
     queryFn: () => getCols(boardId),
@@ -60,7 +78,24 @@ function Boardpage() {
     }
     return [];
   }, [cols]);
-
+  const addColMutation = useMutation({
+    mutationFn: addCol,
+    onSuccess: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["currentBoardcols", boardId],
+      }),
+  });
+  function handleAddCol() {
+    if (title) {
+      const postData = {
+        name: title,
+        board_id: boardId,
+        position: sortedCols.length + 1,
+      };
+      addColMutation.mutate(postData);
+      setTitle("");
+    }
+  }
   return (
     <Box sx={boxStyle}>
       {sortedCols.map((col) => (
@@ -70,6 +105,22 @@ function Boardpage() {
           colId={col.columns_id}
         />
       ))}
+      <Paper sx={paperStyle}>
+        {/* <AddIcon sx={{ fontSize: 30 }} /> add new column */}
+        <ModalCompound buttontxt="Add new column">
+          <ModalCompound.TextInput
+            maxRows={2}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              setTitle(event.target.value);
+            }}
+          >
+            Tiltle
+          </ModalCompound.TextInput>
+          <ModalCompound.Btn onClick={handleAddCol}>
+            Add column
+          </ModalCompound.Btn>
+        </ModalCompound>
+      </Paper>
     </Box>
   );
 }
