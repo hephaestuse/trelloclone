@@ -6,7 +6,10 @@ import Modal from "@mui/material/Modal";
 import AddIcon from "@mui/icons-material/Add";
 import styled from "@emotion/styled";
 import { TextField, Typography } from "@mui/material";
-type TModal = { children: React.ReactNode; buttontxt?: string };
+type TModal = {
+  children: React.ReactNode;
+  buttontxt?: string;
+};
 const style = {
   position: "absolute",
   top: "50%",
@@ -39,7 +42,7 @@ const ModalContext = React.createContext<ModalContextType | undefined>(
   undefined
 );
 
-function ModalCompound({ children, buttontxt }: TModal) {
+function ModalCompound({ children, buttontxt}: TModal) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -148,7 +151,6 @@ function Title({ children, variant = "h6", component = "h2" }: TModalTitle) {
     </Typography>
   );
 }
-//addchildren
 
 ModalCompound.Btn = Btn;
 ModalCompound.TextInput = TextInput;
