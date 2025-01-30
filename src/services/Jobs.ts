@@ -58,3 +58,14 @@ export const batchJobUpdate = async (updates: Update[]) => {
 
   return await Promise.all(updatePromises);
 };
+
+export async function deleteJobs(card_id: string) {
+  const { data, error } = await supabase
+    .from("cards")
+    .delete()
+    .eq("card_id", card_id);
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}

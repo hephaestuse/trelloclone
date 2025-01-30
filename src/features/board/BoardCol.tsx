@@ -15,6 +15,7 @@ import React from "react";
 import ModalCompound from "../../components/ModalCompound";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+
 type props = { colTitle: string; colId: string };
 function BoardCol({ colTitle, colId }: props) {
   const queryClient = useQueryClient();
@@ -125,6 +126,8 @@ function BoardCol({ colTitle, colId }: props) {
               key={job.card_id}
               description={job.description}
               title={job.title}
+              ownerCol={colId}
+              card_id={job.card_id}
             >
               <>
                 <Box display="flex" justifyContent="left">
