@@ -19,3 +19,17 @@ export async function addCol(postData: object) {
 
   return data;
 }
+export async function deleteCol(colId: string) {
+  const { error: deleteCardsError } = await supabase
+    .from("cards")
+    .delete()
+    .eq("column_id", colId);
+  if (deleteCardsError) throw new Error(deleteCardsError.message);
+
+  const { error } = await supabase
+    .from("columns")
+    .delete()
+    .eq("columns_id", colId);
+
+  if (error) throw new Error(error.message);
+}

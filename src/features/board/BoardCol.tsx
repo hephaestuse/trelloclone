@@ -1,12 +1,16 @@
 import {
   Box,
-  colors,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   Divider,
   Fade,
   IconButton,
   Menu,
   MenuItem,
   Paper,
+  Slide,
   Stack,
   Typography,
 } from "@mui/material";
@@ -21,6 +25,9 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
+import { TransitionProps } from "@mui/material/transitions";
+import { deleteCol } from "../../services/cols";
+import { useParams } from "react-router-dom";
 const paperStyle = {
   background: "rgba(255, 255, 255, 0.685)",
   backdropFilter: "blur(5px)",
@@ -34,13 +41,24 @@ const paperStyle = {
   color: "rgb(80, 80, 80)",
 };
 type props = { colTitle: string; colId: string };
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 function BoardCol({ colTitle, colId }: props) {
+  const { boardId } = useParams();
+  const [openDialog, setOpenDialog] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleButtonMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleCloseBtnMneu = () => {
     setAnchorEl(null);
   };
   const queryClient = useQueryClient();
@@ -77,6 +95,7 @@ function BoardCol({ colTitle, colId }: props) {
       position: sortedJobs.length + 1,
     });
   }
+
   const positionMutation = useMutation({
     mutationFn: batchJobUpdate,
     onSuccess: () => {
@@ -117,6 +136,32 @@ function BoardCol({ colTitle, colId }: props) {
       console.error("Error updating records", error);
     }
   }
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+    handleCloseBtnMneu();
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const deleteMutation = useMutation({
+    mutationFn: deleteCol,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["currentBoardcols", boardId],
+      });
+    },
+  });
+  async function handleDeleteCol() {
+    try {
+      await deleteMutation.mutateAsync(colId);
+    } catch (error) {
+      console.error("Error deleting record", error);
+    }
+    setOpenDialog(false);
+  }
   return (
     <>
       <Paper sx={paperStyle}>
@@ -145,7 +190,7 @@ function BoardCol({ colTitle, colId }: props) {
               }}
               anchorEl={anchorEl}
               open={open}
-              onClose={handleClose}
+              onClose={handleCloseBtnMneu}
               TransitionComponent={Fade}
               anchorOrigin={{
                 vertical: "bottom",
@@ -156,14 +201,32 @@ function BoardCol({ colTitle, colId }: props) {
                 horizontal: "right",
               }}
             >
-              <MenuItem onClick={handleClose} sx={{ color: "#262779" }}>
+              <MenuItem onClick={handleCloseBtnMneu} sx={{ color: "#262779" }}>
                 <EditIcon /> Edit title
               </MenuItem>
-              <MenuItem onClick={handleClose} sx={{ color: "error.main" }}>
+              <MenuItem
+                onClick={handleClickOpenDialog}
+                sx={{ color: "error.main" }}
+              >
                 <DeleteForeverIcon /> Delete
               </MenuItem>
             </Menu>
           </div>
+          <Dialog
+            open={openDialog}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleCloseDialog}
+            aria-describedby="alert-dialog-slide-description"
+          >
+            <DialogTitle>{"Are you removing column?"}</DialogTitle>
+            <DialogActions sx={{ display: "flex", justifyContent: "center" }}>
+              <Button sx={{ color: "error.main" }} onClick={handleDeleteCol}>
+                <DeleteForeverIcon /> Do it
+              </Button>
+              <Button onClick={handleCloseDialog}>Forget</Button>
+            </DialogActions>
+          </Dialog>
         </Stack>
         <Stack spacing={2} sx={{ overflow: "auto", maxHeight: "70dvh" }}>
           {sortedJobs?.map((job) => (
