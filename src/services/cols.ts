@@ -33,3 +33,14 @@ export async function deleteCol(colId: string) {
 
   if (error) throw new Error(error.message);
 }
+export async function updateCol(updateData: [string, object]) {
+  const { data, error } = await supabase
+    .from("columns")
+    .update(updateData[1])
+    .eq("columns_id", updateData[0])
+    .select();
+
+  if (error) throw new Error(error.message);
+
+  return data;
+}

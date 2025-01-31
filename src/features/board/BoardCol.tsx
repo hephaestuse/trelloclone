@@ -12,6 +12,7 @@ import {
   Paper,
   Slide,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -19,14 +20,15 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import JobCard from "./JobCard";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { batchJobUpdate, getJobs, postJobs } from "../../services/Jobs";
-import React from "react";
+import React, { useState } from "react";
 import ModalCompound from "../../components/ModalCompound";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import CheckBoxIcon from "@mui/icons-material/CheckBox";
 import EditIcon from "@mui/icons-material/Edit";
 import { TransitionProps } from "@mui/material/transitions";
-import { deleteCol } from "../../services/cols";
+import { deleteCol, updateCol } from "../../services/cols";
 import { useParams } from "react-router-dom";
 const paperStyle = {
   background: "rgba(255, 255, 255, 0.685)",
@@ -44,7 +46,7 @@ type props = { colTitle: string; colId: string };
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
-    children: React.ReactElement<any, any>;
+    children: React.ReactElement;
   },
   ref: React.Ref<unknown>
 ) {
@@ -145,7 +147,7 @@ function BoardCol({ colTitle, colId }: props) {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
-
+  //delete col
   const deleteMutation = useMutation({
     mutationFn: deleteCol,
     onSuccess: () => {
@@ -162,17 +164,55 @@ function BoardCol({ colTitle, colId }: props) {
     }
     setOpenDialog(false);
   }
+  //Edit Title
+  const [titleEditable, setTitleEditable] = useState(false);
+  const [columnTitle, setColumnTitle] = useState(colTitle);
+  function handleEditTitleBtnClick() {
+    setTitleEditable(true);
+    handleCloseBtnMneu();
+  }
+  const updateMutation = useMutation({
+    mutationFn: updateCol,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["currentBoardcols", boardId],
+      });
+    },
+  });
+  function handleTitleEddit() {
+    updateMutation.mutateAsync([colId, { name: columnTitle }]);
+    setTitleEditable(false);
+  }
   return (
     <>
       <Paper sx={paperStyle}>
         <Stack direction="row" sx={{ alignItems: "center", mb: 2 }}>
-          <Typography
-            variant="body1"
-            component="h6"
-            sx={{ fontWeight: "bold", color: "rgb(41, 41, 41)" }}
-          >
-            {colTitle}
-          </Typography>
+          {titleEditable ? (
+            <>
+              <TextField
+                value={columnTitle}
+                onChange={(e) => setColumnTitle(e.target.value)}
+              ></TextField>
+              <span onClick={handleTitleEddit}>
+                <CheckBoxIcon
+                  sx={{
+                    fontSize: "2rem",
+                    transform: "translateX(-2rem)",
+                    color: "secondary.dark",
+                    cursor: "pointer",
+                  }}
+                />
+              </span>
+            </>
+          ) : (
+            <Typography
+              variant="body1"
+              component="h6"
+              sx={{ fontWeight: "bold", color: "rgb(41, 41, 41)" }}
+            >
+              {columnTitle}
+            </Typography>
+          )}
           <div style={{ marginLeft: "auto" }}>
             <IconButton
               aria-label="job-settings"
@@ -201,7 +241,10 @@ function BoardCol({ colTitle, colId }: props) {
                 horizontal: "right",
               }}
             >
-              <MenuItem onClick={handleCloseBtnMneu} sx={{ color: "#262779" }}>
+              <MenuItem
+                onClick={handleEditTitleBtnClick}
+                sx={{ color: "#262779" }}
+              >
                 <EditIcon /> Edit title
               </MenuItem>
               <MenuItem
