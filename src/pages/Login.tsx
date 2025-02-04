@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Container,
+  Typography,
+  Box,
+} from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../services/auth";
 import { useNavigate } from "react-router-dom";
-
+import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch } from "react-redux";
-
-import { useSession } from "../features/user/useSession";
 import { setUserId } from "../features/user/userSlice";
 const Login: React.FC = () => {
   const [email, setEmail] = useState("xxx@xxx.com");
   const [password, setPassword] = useState("123123");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { data: session } = useSession();
   useEffect(() => {
     document.body.style.backgroundImage = "";
   }, []);
@@ -24,7 +27,11 @@ const Login: React.FC = () => {
     console.log("Password:", password);
     mutate({ email, password });
   };
-  const { mutate, isLoading, error } = useMutation({
+  const {
+    mutate,
+    isPending: isLoading,
+    isError,
+  } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
       console.log("Login successful:", data);
@@ -36,6 +43,7 @@ const Login: React.FC = () => {
       console.error("Login error:", error.message);
     },
   });
+
   return (
     <>
       <Container
@@ -104,13 +112,38 @@ const Login: React.FC = () => {
                   required
                 />
               </Box>
+              <Box sx={{ mb: 2 }}>
+                {isError && (
+                  <Typography
+                    sx={{
+                      color: "error.dark",
+                      borderRadius: "5px",
+                      padding: "0.3rem",
+                      backgroundColor: "error.light",
+                    }}
+                  >
+                    Invalid Email or Password
+                  </Typography>
+                )}
+              </Box>
               <Button
                 type="submit"
                 variant="contained"
                 color="primary"
                 fullWidth
+                disabled={isLoading}
               >
-                Login
+                {isLoading ? (
+                  <>
+                    wait
+                    <CircularProgress
+                      sx={{ marginX: "0.25rem" }}
+                      size={"1.5rem"}
+                    />
+                  </>
+                ) : (
+                  "Login"
+                )}
               </Button>
             </form>
           </Box>
