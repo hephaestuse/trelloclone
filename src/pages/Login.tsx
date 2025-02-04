@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { useSession } from "../features/user/useSession";
-import { setUserId} from "../features/user/userSlice";
+import { setUserId } from "../features/user/userSlice";
 const Login: React.FC = () => {
   const [email, setEmail] = useState("xxx@xxx.com");
   const [password, setPassword] = useState("123123");
@@ -29,7 +29,7 @@ const Login: React.FC = () => {
     onSuccess: (data) => {
       console.log("Login successful:", data);
 
-      dispatch(setUserId(session?.user.id));
+      dispatch(setUserId(data.user.id));
       navigate("/dashboard");
     },
     onError: (error) => {
