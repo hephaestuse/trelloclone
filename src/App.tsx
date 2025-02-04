@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import FixedElements from "./ui/FixedElements";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import Login from "./pages/Login";
 
 function App() {
   const queryClinte = new QueryClient();
@@ -20,8 +21,9 @@ function App() {
             <CssBaseline /> {/****globals for Css reset for MUI*****/}
             <ReactQueryDevtools initialIsOpen={false} />
             <Routes>
+              <Route path="/" element={<Login />} />
               <Route element={<FixedElements />}>
-                <Route path="/" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/board/:boardId" element={<Boardpage />} />
                 <Route path="*" element={<Pagenotfound />} />
               </Route>

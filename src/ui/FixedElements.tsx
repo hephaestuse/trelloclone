@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "../services/user";
 import { RootState } from "../store";
-import { setUserProfile } from "../features/userSetting/userSlice";
+import { setUserProfile } from "../features/user/userSlice";
 import { Container } from "@mui/material";
 import { Outlet } from "react-router-dom";
 

@@ -13,7 +13,7 @@ type TinitialState = {
 };
 
 const initialState: TinitialState = {
-  userId: "58f75f31-2b2e-4048-a061-57f0bb1f2a05",
+  userId: "",
   userProfile: {
     avatar: "",
     bg_color: "",
