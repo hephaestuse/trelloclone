@@ -11,8 +11,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getUserProfile } from "../services/user";
 import { RootState } from "../store";
 import { setUserProfile } from "../features/user/userSlice";
-import { Container } from "@mui/material";
-import { Outlet } from "react-router-dom";
+import { Container, Typography } from "@mui/material";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useSession } from "../features/user/useSession";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
   open?: boolean;
@@ -48,6 +49,7 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 }));
 
 export default function FixedElements() {
+  const { data: session, isLoading } = useSession();
   const [open, setOpen] = React.useState(false);
   const userId = useSelector((state: RootState) => state.user.userId);
   const dispatch = useDispatch();
@@ -61,7 +63,8 @@ export default function FixedElements() {
       dispatch(setUserProfile(userProfile));
     }
   }, [userProfile, dispatch]);
-
+  if (isLoading) return <Typography>loading...</Typography>;
+  if (!session) return <Navigate to="/" />;
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
