@@ -9,9 +9,10 @@ import { setUserId } from "../features/user/userSlice";
 import { insertUserProfile } from "../services/user";
 
 function SigneUpForm() {
-  const [email, setEmail] = useState("xxx@xxx.com");
-  const [password, setPassword] = useState("123123");
-  const [confirmPassword, setConfirmPassword] = useState("123123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,7 +21,7 @@ function SigneUpForm() {
     if (password === confirmPassword) {
       mutate({ email, password });
     } else {
-      console.log("Passwords do not match");
+      setErrorMessage("Passwords do not match");
     }
   };
 
@@ -38,7 +39,7 @@ function SigneUpForm() {
       navigate("/dashboard"); // Redirect to dashboard or any other page
     },
     onError: (error) => {
-      console.error("Sign up error:", error.message);
+      setErrorMessage(error.message);
     },
   });
 
@@ -85,7 +86,7 @@ function SigneUpForm() {
             required
           />
         </Box>
-        {isError && (
+        {isError && errorMessage && (
           <Box sx={{ mb: 2 }}>
             <Typography
               sx={{
@@ -95,7 +96,7 @@ function SigneUpForm() {
                 backgroundColor: "error.light",
               }}
             >
-              Sign Up Error
+              {errorMessage}
             </Typography>
           </Box>
         )}

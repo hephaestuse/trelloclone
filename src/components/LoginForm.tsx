@@ -7,8 +7,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useDispatch } from "react-redux";
 import { setUserId } from "../features/user/userSlice";
 function LoginForm() {
-  const [email, setEmail] = useState("xxx@xxx.com");
-  const [password, setPassword] = useState("123123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSubmit = (event: React.FormEvent) => {
