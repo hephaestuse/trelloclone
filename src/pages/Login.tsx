@@ -62,7 +62,7 @@ const Login: React.FC = () => {
               sx={{ borderRadius: "7px" }}
               showLabels
               value={formNumber}
-              onChange={(event, newValue) => {
+              onChange={(_, newValue) => {
                 setFormNumber(newValue);
                 console.log(formNumber);
               }}
