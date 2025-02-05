@@ -1,12 +1,19 @@
 import React, { useEffect } from "react";
-import { Container, Typography, Box } from "@mui/material";
+import {
+  Container,
+  Typography,
+  Box,
+  BottomNavigation,
+  BottomNavigationAction,
+} from "@mui/material";
 import LoginForm from "../components/LoginForm";
+import SigneUpForm from "../components/SigneUpForm";
 
 const Login: React.FC = () => {
+  const [formNumber, setFormNumber] = React.useState(0);
   useEffect(() => {
     document.body.style.backgroundImage = "";
   }, []);
-
   return (
     <>
       <Container
@@ -41,8 +48,30 @@ const Login: React.FC = () => {
             lets do it!
           </Typography>
         </Box>
-        <Box sx={{ width: "50%", display: "flex", justifyContent: "center" }}>
-          <LoginForm />
+        <Box
+          sx={{
+            width: "50%",
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Box sx={{ width: "20%" }}>
+            <BottomNavigation
+              sx={{ borderRadius: "7px" }}
+              showLabels
+              value={formNumber}
+              onChange={(event, newValue) => {
+                setFormNumber(newValue);
+                console.log(formNumber);
+              }}
+            >
+              <BottomNavigationAction label="Login" />
+              <BottomNavigationAction label="Sign   up" />
+            </BottomNavigation>
+          </Box>
+          {formNumber ? <SigneUpForm /> : <LoginForm />}
         </Box>
       </Container>
     </>
