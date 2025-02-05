@@ -106,7 +106,6 @@ function Boardpage() {
         />
       ))}
       <Paper sx={paperStyle}>
-        {/* <AddIcon sx={{ fontSize: 30 }} /> add new column */}
         <ModalCompound buttontxt="Add new column">
           <ModalCompound.TextInput
             maxRows={2}

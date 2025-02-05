@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 type TinitialState = {
-  userId: string | null;
+  userId: string;
   userProfile: {
     avatar: string | null;
     bg_color: string | null;
@@ -33,7 +33,7 @@ const userSlice = createSlice({
       state.userId = action.payload; // مقدار جدید userId
     },
     clearUserId: (state) => {
-      state.userId = null; // پاک کردن userId
+      state.userId = ""; // پاک کردن userId
     },
     setUserProfile: (state, action) => {
       state.userProfile = action.payload;

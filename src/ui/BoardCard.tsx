@@ -1,5 +1,6 @@
 import { Grid2 } from "@mui/material";
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+
 type props = {
   gridTemplate?: object;
   children?: string;
@@ -11,7 +12,6 @@ type props = {
 const pallet = ["#ff99c8", "#fcf6bd", "#d0f4de", "#a9def9", "#e4c1f9"];
 function getRandomColor() {
   const color = pallet[Math.floor(Math.random() * 5)];
-
   return color;
 }
 
@@ -26,6 +26,7 @@ function BoardCard({
   if (type === "plus")
     return (
       <Grid2
+        onClick={onclickFn}
         className={overeffect ? "hoverParent" : ""}
         component={"div"}
         size={gridTemplate}
@@ -79,5 +80,4 @@ function BoardCard({
       </Grid2>
     );
 }
-
 export default BoardCard;

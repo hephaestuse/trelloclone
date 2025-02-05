@@ -5,7 +5,7 @@ export async function getBoards(userId: string | null) {
     .from("boards")
     .select("*")
     .eq("owner_id", userId);
-  if (error) throw new Error(error.message);    
+  if (error) throw new Error(error.message);
   return data;
 }
 export async function getBoardData(boardId: string | undefined) {
@@ -14,6 +14,15 @@ export async function getBoardData(boardId: string | undefined) {
     .select("*")
     .eq("board_id", boardId)
     .single();
+  if (error) throw new Error(error.message);
+  return data;
+}
+export async function addBoard(boardData: object) {
+  const { data, error } = await supabase
+    .from("boards")
+    .insert([boardData])
+    .select();
+
   if (error) throw new Error(error.message);
   return data;
 }
