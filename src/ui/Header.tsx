@@ -52,7 +52,7 @@ function Header({ setOpen }: THeaderProps) {
   };
 
   function handleClickHome() {
-    navigate(`/`);
+    navigate(`/dashboard`);
   }
   return (
     <AppBar

@@ -12,7 +12,7 @@ import { getUserProfile } from "../services/user";
 import { RootState } from "../store";
 import { setUserProfile } from "../features/user/userSlice";
 import { Container, Typography } from "@mui/material";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useSession } from "../features/user/useSession";
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
@@ -63,6 +63,7 @@ export default function FixedElements() {
       dispatch(setUserProfile(userProfile));
     }
   }, [userProfile, dispatch]);
+  //protecting the routs for autoeization by session
   if (isLoading) return <Typography>loading...</Typography>;
   if (!session) return <Navigate to="/" />;
   return (
