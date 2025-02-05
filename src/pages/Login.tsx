@@ -10,7 +10,7 @@ import LoginForm from "../components/LoginForm";
 import SigneUpForm from "../components/SigneUpForm";
 
 const Login: React.FC = () => {
-  const [formNumber, setFormNumber] = React.useState(0);
+  const [formNumber, setFormNumber] = React.useState(1);
   useEffect(() => {
     document.body.style.backgroundImage = "";
   }, []);

@@ -9,6 +9,15 @@ export const loginUser = async ({ email, password }: TloginUser) => {
   if (error) throw new Error(error.message);
   return data;
 };
+export const signeUpUser = async ({ email, password }: TloginUser) => {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+  });
+
+  if (error) throw new Error(error.message);
+  return data;
+};
 
 export const fetchSession = async () => {
   const { data, error } = await supabase.auth.getSession();

@@ -14,8 +14,6 @@ function LoginForm() {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     // Handle login logic here
-    console.log("Email:", email);
-    console.log("Password:", password);
     mutate({ email, password });
   };
   const {
@@ -25,8 +23,6 @@ function LoginForm() {
   } = useMutation({
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log("Login successful:", data);
-
       dispatch(setUserId(data.user.id));
       navigate("/dashboard");
     },
