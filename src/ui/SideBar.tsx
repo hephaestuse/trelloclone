@@ -12,7 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import SettingsIcon from "@mui/icons-material/Settings";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import HomeIcon from "@mui/icons-material/Home";
-import { Collapse, Divider, Toolbar, Typography } from "@mui/material";
+import { Button, Collapse, Divider, Toolbar, Typography } from "@mui/material";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
@@ -21,6 +21,7 @@ import { getBoards } from "../services/boards";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { useNavigate } from "react-router-dom";
+import { logOut } from "../services/user";
 
 type TSidebar = {
   open: boolean;
@@ -54,6 +55,10 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
   function handleClickHome() {
     navigate(`/`);
   }
+  function handleLogout() {
+    logOut();
+    navigate("/");
+  }
   return (
     <Drawer
       sx={{
@@ -73,7 +78,7 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
       anchor="left"
       open={open}
     >
-      <Toolbar/>
+      <Toolbar />
       <DrawerHeader>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === "ltr" ? (
@@ -154,6 +159,7 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
           </ListItem>
         ))}
       </List>
+      <Button onClick={handleLogout}>logout</Button>
     </Drawer>
   );
 }
