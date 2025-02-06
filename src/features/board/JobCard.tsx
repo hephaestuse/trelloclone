@@ -93,7 +93,7 @@ function JobCard({
       queryClient.invalidateQueries({ queryKey: ["jobs", colId] });
     },
   });
-  function handleUpdateCard() {   
+  function handleUpdateCard() {
     try {
       UpdateMutation.mutateAsync({
         updateData: {
@@ -113,7 +113,12 @@ function JobCard({
       <CustomPaper onClick={handleOpen}>{children}</CustomPaper>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={() => {
+          handleClose();
+          //if user make editable but not saved and cloused the modal
+          setInputDisable(true);
+          setChangedDescription(description);
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
