@@ -53,7 +53,7 @@ export default function SideBar({ open, setOpen, drawerWidth }: TSidebar) {
     queryFn: () => getBoards(userId),
   });
   function handleClickHome() {
-    navigate(`/`);
+    navigate(`/dashboard`);
   }
   function handleLogout() {
     logOut();
